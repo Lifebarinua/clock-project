@@ -31,6 +31,7 @@ body {
   font-size: 3rem;
   color: cyan;
   text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 40px cyan;
+  animation: glowPulse 2s infinite alternate; /* 🔥 added animation */
 }
 
 button {
@@ -57,4 +58,23 @@ p {
 .fancy p {
   color: cyan;
   text-shadow: 0 0 5px cyan, 0 0 10px cyan;
+  animation: glowPulse 3s infinite alternate; /* 🔥 subtle slower pulse */
+}
+
+/* Keyframes for glowing animation */
+@keyframes glowPulse {
+  from {
+    text-shadow: 
+      0 0 5px cyan,
+      0 0 10px cyan,
+      0 0 20px cyan,
+      0 0 40px cyan;
+  }
+  to {
+    text-shadow: 
+      0 0 20px cyan,
+      0 0 40px cyan,
+      0 0 60px cyan,
+      0 0 80px cyan;
+  }
 }
