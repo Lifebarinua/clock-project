@@ -31,7 +31,7 @@ body {
   font-size: 3rem;
   color: cyan;
   text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 40px cyan;
-  animation: glowPulse 2s infinite alternate; /* 🔥 added animation */
+ animation: glowCycle 6s infinite alternate; /* 🔥 new animation */
 }
 
 button {
@@ -58,23 +58,37 @@ p {
 .fancy p {
   color: cyan;
   text-shadow: 0 0 5px cyan, 0 0 10px cyan;
-  animation: glowPulse 3s infinite alternate; /* 🔥 subtle slower pulse */
+ animation: glowCycle 8s infinite alternate; /* slower cycle */
 }
 
-/* Keyframes for glowing animation */
-@keyframes glowPulse {
-  from {
-    text-shadow: 
-      0 0 5px cyan,
-      0 0 10px cyan,
-      0 0 20px cyan,
-      0 0 40px cyan;
+/* Fancy glowing clock */
+.fancy h1 {
+  font-size: 3rem;
+  color: cyan;
+  text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 40px cyan;
+  animation: glowCycle 6s infinite alternate; /* 🔥 new animation */
+}
+
+/* Fancy glowing date */
+.fancy p {
+  font-size: 1.2rem;
+  color: cyan;
+  text-shadow: 0 0 5px cyan, 0 0 10px cyan;
+  animation: glowCycle 8s infinite alternate; /* slower cycle */
+}
+
+/* Keyframes for cycling glow */
+@keyframes glowCycle {
+  0% {
+    color: cyan;
+    text-shadow: 0 0 10px cyan, 0 0 20px cyan, 0 0 40px cyan;
   }
-  to {
-    text-shadow: 
-      0 0 20px cyan,
-      0 0 40px cyan,
-      0 0 60px cyan,
-      0 0 80px cyan;
+  50% {
+    color: magenta;
+    text-shadow: 0 0 10px magenta, 0 0 20px magenta, 0 0 40px magenta;
+  }
+  100% {
+    color: purple;
+    text-shadow: 0 0 10px purple, 0 0 20px purple, 0 0 40px purple;
   }
 }
