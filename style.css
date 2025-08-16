@@ -47,3 +47,14 @@ button {
 button:hover {
   background: #666;
 }
+p {
+  margin: 5px 0 10px;
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+/* Fancy glowing date */
+.fancy p {
+  color: cyan;
+  text-shadow: 0 0 5px cyan, 0 0 10px cyan;
+}

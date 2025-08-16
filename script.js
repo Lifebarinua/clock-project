@@ -10,20 +10,27 @@ function formatTime(date, is24Hour) {
   if (is24Hour) {
     return `${String(hours).padStart(2, '0')}:${minutes}:${seconds}`;
   } else {
-    let period = hours >= 12 ? "PM" : "AM";
+    const period = hours >= 12 ? "PM" : "AM";
     hours = hours % 12 || 12; // Convert to 12-hour
     return `${hours}:${minutes}:${seconds} ${period}`;
   }
 }
 
+function formatDate(date) {
+  const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+  return date.toLocaleDateString(undefined, options);
+}
+
 function updateClock() {
   const now = new Date();
 
-  // Update simple clock
+  // Update times
   document.getElementById('simple-clock').textContent = formatTime(now, simple24Hour);
-
-  // Update fancy clock
   document.getElementById('fancy-clock').textContent = formatTime(now, fancy24Hour);
+
+  // Update dates
+  document.getElementById('simple-date').textContent = formatDate(now);
+  document.getElementById('fancy-date').textContent = formatDate(now);
 }
 
 // Run immediately and update every second
