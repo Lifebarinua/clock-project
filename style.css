@@ -93,7 +93,7 @@ p {
   }
 }
 
-/* Calendar styling */
+/* --- Simple calendar (plain) --- */
 .calendar {
   display: none;
   margin-top: 10px;
@@ -120,4 +120,43 @@ p {
   background: cyan;
   color: black;
   font-weight: bold;
+  border-radius: 5px;
+}
+
+/* --- Fancy calendar (glowing) --- */
+.calendar.fancy-cal {
+  background: #111;
+  color: cyan;
+  box-shadow: 0 0 15px cyan;
+  animation: glowCycle 8s infinite alternate ease-in-out;
+}
+.calendar.fancy-cal th {
+  background: #222;
+  text-shadow: 0 0 5px currentColor;
+}
+.calendar.fancy-cal td.today {
+  background: currentColor;
+  color: black;
+  font-weight: bold;
+  border-radius: 50%;
+  box-shadow: 0 0 15px currentColor;
+}
+
+/* Scroll buttons */
+.scroll-controls {
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+}
+.scroll-controls button {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #444;
+  color: white;
+  transition: 0.3s;
+}
+.scroll-controls button:hover {
+  background: #666;
 }

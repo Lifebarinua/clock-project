@@ -2,6 +2,10 @@
 let simple24Hour = true;
 let fancy24Hour = true;
 
+// Calendar state trackers
+let simpleMonthOffset = 0;
+let fancyMonthOffset = 0;
+
 function formatTime(date, is24Hour) {
   let hours = date.getHours();
   let minutes = String(date.getMinutes()).padStart(2, '0');
@@ -39,7 +43,6 @@ document.getElementById('simple-toggle').addEventListener('click', () => {
     ? "Switch to 12-hour"
     : "Switch to 24-hour";
 });
-
 document.getElementById('fancy-toggle').addEventListener('click', () => {
   fancy24Hour = !fancy24Hour;
   document.getElementById('fancy-toggle').textContent = fancy24Hour
@@ -47,33 +50,42 @@ document.getElementById('fancy-toggle').addEventListener('click', () => {
     : "Switch to 24-hour";
 });
 
-// Calendar generator
-function generateCalendar(containerId) {
+// Calendar generator with month offset
+function generateCalendar(containerId, monthOffset = 0) {
   const now = new Date();
   const year = now.getFullYear();
-  const month = now.getMonth();
+  const month = now.getMonth() + monthOffset;
+  const displayDate = new Date(year, month, 1);
+
+  const displayYear = displayDate.getFullYear();
+  const displayMonth = displayDate.getMonth();
   const today = now.getDate();
+  const isCurrentMonth = (displayYear === now.getFullYear() && displayMonth === now.getMonth());
 
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay = new Date(displayYear, displayMonth, 1).getDay();
+  const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
 
-  let calendar = `<table>
+  let calendar = `
+    <div class="scroll-controls">
+      <button class="prev">↑ Prev</button>
+      <span>${displayDate.toLocaleString('default', { month: 'long' })} ${displayYear}</span>
+      <button class="next">↓ Next</button>
+    </div>
+    <table>
     <thead>
-      <tr><th colspan="7">${now.toLocaleString('default', { month: 'long' })} ${year}</th></tr>
       <tr>
         <th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th>
       </tr>
     </thead>
     <tbody><tr>`;
 
-  // Empty cells before first day
   for (let i = 0; i < firstDay; i++) {
     calendar += "<td></td>";
   }
 
   for (let day = 1; day <= daysInMonth; day++) {
-    const currentDay = new Date(year, month, day).getDay();
-    const isToday = day === today ? "today" : "";
+    const currentDay = new Date(displayYear, displayMonth, day).getDay();
+    const isToday = (day === today && isCurrentMonth) ? "today" : "";
     calendar += `<td class="${isToday}">${day}</td>`;
     if (currentDay === 6 && day !== daysInMonth) {
       calendar += "</tr><tr>";
@@ -82,10 +94,31 @@ function generateCalendar(containerId) {
 
   calendar += "</tr></tbody></table>";
   document.getElementById(containerId).innerHTML = calendar;
+
+  // Add event listeners for scroll buttons
+  const container = document.getElementById(containerId);
+  container.querySelector(".prev").addEventListener("click", () => {
+    if (containerId === "simple-calendar") {
+      simpleMonthOffset--;
+      generateCalendar(containerId, simpleMonthOffset);
+    } else {
+      fancyMonthOffset--;
+      generateCalendar(containerId, fancyMonthOffset);
+    }
+  });
+  container.querySelector(".next").addEventListener("click", () => {
+    if (containerId === "simple-calendar") {
+      simpleMonthOffset++;
+      generateCalendar(containerId, simpleMonthOffset);
+    } else {
+      fancyMonthOffset++;
+      generateCalendar(containerId, fancyMonthOffset);
+    }
+  });
 }
 
-// Toggle calendar
-function toggleCalendar(btnId, calendarId) {
+// Toggle calendar show/hide
+function toggleCalendar(btnId, calendarId, offsetVar) {
   const btn = document.getElementById(btnId);
   const cal = document.getElementById(calendarId);
 
@@ -94,11 +127,11 @@ function toggleCalendar(btnId, calendarId) {
       cal.style.display = "none";
       btn.textContent = "Show Calendar";
     } else {
-      generateCalendar(calendarId);
+      generateCalendar(calendarId, offsetVar === "simple" ? simpleMonthOffset : fancyMonthOffset);
       cal.style.display = "block";
       btn.textContent = "Hide Calendar";
     }
   });
 }
-toggleCalendar("simple-calendar-btn", "simple-calendar");
-toggleCalendar("fancy-calendar-btn", "fancy-calendar");
+toggleCalendar("simple-calendar-btn", "simple-calendar", "simple");
+toggleCalendar("fancy-calendar-btn", "fancy-calendar", "fancy");
